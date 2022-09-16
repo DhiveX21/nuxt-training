@@ -4,9 +4,9 @@
          <div class="bg-white shadow-md mb-3">
                     <div class="w-100 border-solid border-2 border-gray-400 rounded-t-md flex justify-between p-5 pl-2 items-center">
                         <div class="flex gap-5">
-                            <img src="https://via.placeholder.com/52" class="max-w-full rounded-full" width="52" height="52" alt="user picture">
+                            <img :src="post.profilePicture" class="max-w-full rounded-full" width="52" height="52" alt="user picture">
                             <div>
-                                <p class="font-medium">nama user</p>
+                                <p class="font-medium">{{  post.profileName }}</p>
                             </div>
                         </div>
                     </div>
@@ -17,12 +17,12 @@
                 </div>
                 <!-- post description -->
                 <div class="px-5 py-2">
-                    <p><b>arya</b></p>
-                    <p>ini deskripsi gambar</p>
+                    <p><b>{{ post.profileName }}</b></p>
+                    <p>{{ post.description }}</p>
                 </div>
                 <hr>
-                <div v-if="comments.length > 0">
-                    <comment-item v-for="comment in comments" :key="comment.id"/>
+                <div v-if="post.comments.length > 0">
+                    <comment-item v-for="(comment, index) in post.comments" :comment="comment" :key="index"/>
                 </div>
                 <div v-else>
                     <p>There is no comment</p>
@@ -41,19 +41,11 @@
 </template>
 <script>
     export default {
-        data(){
-            return {
-                comments : [
-                    {
-                        id : 1,
-                        message : "hello comment"
-                    },
-                    {
-                        id : 2,
-                        message : "hello comment"
-                    },
-                ]
+        props: {
+            post: {
+                type: Object,
+                required: true
             }
-        }
+        },
     }
 </script>
