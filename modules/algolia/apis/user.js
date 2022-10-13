@@ -17,6 +17,26 @@ export default function(algoliaConfig){
             } catch (error) {
                 return getErrorResponse(error)
             }
+        },
+        async getAuthUser(req){
+            try {
+                const user = unWrap(await fetch(`https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/users/query`, {
+                    headers,
+                    method: "POST",
+                    body: JSON.stringify({
+                        facetFilters : [
+                            [
+                                `name:${req.name}`,
+                                `password:${req.password}`
+                            ]
+                        ]
+                    })
+                }))
+
+                return user;
+            } catch (error) {
+                return getErrorResponse(error)
+            }
         }
     }
 }

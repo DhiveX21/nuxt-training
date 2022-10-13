@@ -7,6 +7,14 @@ export default function(apis, authKey){
             apis.user.create(req.body)
             sendJson(req.body, res)
        }
+       if(req.method == "POST" && req.url == "/login"){
+         const user = await apis.user.getAuthUser(req.body);
+         res.end(JSON.stringify(
+            {
+                user : user.json.hits
+             }
+         ))
+       }
        next();
     }
 }
