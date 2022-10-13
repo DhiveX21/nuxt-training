@@ -7,7 +7,7 @@
             <div class="flex flex-col" v-else>
                 <p class="text-center">Data kosong</p>
             </div>
-            <SideCardAccount/>
+            <SideCardAccount v-if="user" :user="user"/>
         </div>
     </div>
 </template>

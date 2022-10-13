@@ -1,3 +1,4 @@
+import { getErrorResponse, unWrap } from "../utils/fetchUtils";
 export default function({ $config, store }, inject){
 
     const headers = {
@@ -7,7 +8,8 @@ export default function({ $config, store }, inject){
 
     inject('dataApi', {
         getPosts,
-        getUserById
+        getUserById,
+        getPostsById
     })
 
     async function getPosts(){
@@ -31,7 +33,7 @@ export default function({ $config, store }, inject){
 
     async function getUserById(userId){
         try {
-            const result = unWrap(await fetch(`https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/users/query`, {
+            const result = await unWrap(await fetch(`https://${$config.algolia.appId}-dsn.algolia.net/1/indexes/users/query`, {
                 headers,
                 method: "POST",
                 body: JSON.stringify({
@@ -46,8 +48,28 @@ export default function({ $config, store }, inject){
 
             return result;
         } catch (error) {
-            console.error(error)
+            return getErrorResponse(error)
         }
     }
 
+    async function getPostsById(userId){
+        try {
+            const result = await unWrap(await fetch(`https://${$config.algolia.appId}-dsn.algolia.net/1/indexes/posts/query`, {
+                headers,
+                method: "POST",
+                body: JSON.stringify({
+                    filters : `userId:${userId}`,
+                    attributesToHighlight: []
+                })
+            }))
+
+            if(result.json.hits.length > 0){
+                store.dispatch("auth/user", result.json.hits[0])
+            }
+
+            return result;
+        } catch (error) {
+            return getErrorResponse(error)
+        }
+    }
 }

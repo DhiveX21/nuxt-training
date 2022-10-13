@@ -69,7 +69,7 @@ export default {
           if (result.json.user.length > 0) {
             alert("Login Success");
             Cookie.set("idToken", result.json.user[0].userId)
-            // window.location.href = "/homes"
+            window.location.href = "/homes"
           } else {
             alert("Login Failed");
           }
