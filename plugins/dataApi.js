@@ -1,4 +1,4 @@
-export default function({ $config }, inject){
+export default function({ $config, store }, inject){
 
     const headers = {
         'X-Algolia-API-Key': $config.algolia.key,
@@ -6,7 +6,8 @@ export default function({ $config }, inject){
     }
 
     inject('dataApi', {
-        getPosts
+        getPosts,
+        getUserById
     })
 
     async function getPosts(){
@@ -24,6 +25,27 @@ export default function({ $config }, inject){
 
             return json;
         }catch(error){
+            console.error(error)
+        }
+    }
+
+    async function getUserById(userId){
+        try {
+            const result = unWrap(await fetch(`https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/users/query`, {
+                headers,
+                method: "POST",
+                body: JSON.stringify({
+                    filters : `userId:${userId}`,
+                    attributesToHighlight: []
+                })
+            }))
+
+            if(result.json.hits.length > 0){
+                store.dispatch("auth/user", result.json.hits[0])
+            }
+
+            return result;
+        } catch (error) {
             console.error(error)
         }
     }

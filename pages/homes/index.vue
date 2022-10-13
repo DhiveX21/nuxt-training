@@ -12,9 +12,32 @@
     </div>
 </template>
 <script>
+    import CookieServer from "cookie";
     export default {
-        async asyncData({ $dataApi }){
+        head(){
+            return {
+                title : "Homepage"
+            }
+        },  
+        computed: {
+            user(){
+                return this.$store.state.auth.user;
+            }
+        },
+        async asyncData({ $dataApi, req, redirect }){
             try {
+
+                let token;
+
+                if(process.server){
+                    if(typeof req.headers.cookie != "undefined"){
+                        token = await CookieServer.parse(req.headers.cookie);
+                        await $dataApi.getUserById(token.idToken);
+                    }else{
+                        redirect("/")
+                    }
+                }
+                
                 const posts = await $dataApi.getPosts();
                 return {
                     posts: posts.hits
