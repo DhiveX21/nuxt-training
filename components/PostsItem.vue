@@ -29,17 +29,18 @@
                 </div>
                 <div class="flex p-2 gap-2 items-center w-full">
                     <div>
-                        <img src="https://via.placeholder.com/52" class="max-w-full rounded-full" width="52" height="52" alt="user picture comment"/>
+                       <nuxt-img :src="user.userImage" class="max-w-full rounded-full" width="52" height="52" alt="user picture" provider="cloudinary"/>
                     </div>
                     <div class="flex-1">
-                        <form action="">
-                            <input type="text" class="input-control w-full rounded-3xl">
+                        <form @submit.prevent="submitComment">
+                            <input type="text" v-model="message" placeholder="Comment..." class="input-control w-full rounded-3xl">
                         </form>
                     </div>
                 </div>
     </div>
 </template>
 <script>
+import { unWrap } from "../utils/fetchUtils"
     export default {
         props: {
             post: {
@@ -47,5 +48,47 @@
                 required: true
             }
         },
+        data(){
+            return {
+                message : "",
+                loader: false,
+            }
+        },
+        computed:{
+            user(){
+                return this.$store.state.auth.user
+            } 
+        },
+        methods:{
+            async submitComment(){
+                if(this.message.length == 0){
+                    return
+                }
+
+               try {
+                 this.post.comments.push({
+                    userId: this.user.userId,
+                    profilePicture: this.user.userImage,
+                    message : this.message
+                })
+
+                const response = await unWrap(await fetch("/api/posts/update", {
+                    body : JSON.stringify(this.post),
+                    method: 'post',
+                    headers : {
+                        'Content-Type': 'application/json'
+                    }
+                }))
+
+                if(response.ok){
+                    this.message = ""
+                }
+               } catch (error) {
+                console.error(error)
+               }
+
+                
+            }
+        }
     }
 </script>
