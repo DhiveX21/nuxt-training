@@ -41,7 +41,7 @@ import Cookie from "js-cookie";
 export default {
   head() {
     return {
-      title: "Login To NuxtStagram",
+      title: "Login To Instagram Clone",
     };
   },
   data() {

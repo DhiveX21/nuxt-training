@@ -8,7 +8,7 @@
             <h2 class="text-2xl">Gallery</h2>
         </div>
         <div class="my-10">
-            <nuxt-link to="post/create" class="bg-gray-400 text-white text-md p-1 rounded-md">
+            <nuxt-link to="/post/create" class="bg-gray-400 text-white text-md p-1 rounded-md">
                 Upload a new photo
             </nuxt-link>
         </div>

@@ -49,7 +49,7 @@ export default {
 
   image:{
     cloudinary : {
-      baseUrl: process.env.CLOUDINARY_URL
+      baseURL: process.env.CLOUDINARY_URL
     }
   },
 
