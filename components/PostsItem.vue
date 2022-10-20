@@ -4,7 +4,7 @@
          <div class="bg-white shadow-md mb-3">
                     <div class="w-100 border-solid border-2 border-gray-400 rounded-t-md flex justify-between p-5 pl-2 items-center">
                         <div class="flex gap-5">
-                            <img :src="post.profilePicture" class="max-w-full rounded-full" width="52" height="52" alt="user picture">
+                            <nuxt-img :src="post.profilePicture" class="max-w-full rounded-full" width="52" height="52" alt="user picture" provider="cloudinary"/>
                             <div>
                                 <p class="font-medium">{{  post.profileName }}</p>
                             </div>
@@ -13,7 +13,7 @@
                 </div>
                 <!-- post body -->
                 <div>
-                    <img src="https://via.placeholder.com/584" class="min-w-full" width="584" height="470" alt="post picture">
+                    <nuxt-img :src="post.image" class="min-w-full" width="584" height="470" alt="post picture" provider="cloudinary"/>
                 </div>
                 <!-- post description -->
                 <div class="px-5 py-2">

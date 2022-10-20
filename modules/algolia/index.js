@@ -1,7 +1,5 @@
-
-
-
-import userRouter from "./routes/user"
+import userRouter from "./routes/user";
+import postRouter from "./routes/post";
 import getApis from "./apis"
 import bodyParser from "body-parser"
 
@@ -12,6 +10,7 @@ export default function(){
 
     this.nuxt.hook("render:setupMiddleware", app => {
         app.use(bodyParser.json());
-        app.use("/api/user", userRouter(apis, authKey))
+        app.use("/api/user", userRouter(apis, authKey));
+        app.use("/api/posts", postRouter(apis, authKey))
     })
 }

@@ -17,7 +17,7 @@
                 <nuxt-img :src="post.image" width="200" height="200" provider="cloudinary" class="object-cover"/>
             </div>
         </div>
-        <div class="flex justify-center items-center h-screen">
+        <div class="flex justify-center items-center h-screen" v-else>
             <p class="text-center text-3xl">There is no posts</p>
         </div>
     </div>
